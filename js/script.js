@@ -21,9 +21,51 @@ function toggleCheckAll(thisClick, inputClass) {
   }
 }
 
+//toggle all class by array - onclick="toggleAllClass(findChildren(findParent(this, 'LI'), '.detail'), 'hidden'); return false;"
+//return false - avoid the page jumping straight to the top"
+function toggleAllClass(allChildren, cls) {
+  for (var i = 0; i < allChildren.length; i++) {
+    allChildren[i].classList.toggle(cls);
+  }
+  // return false; //not working
+}
+
+function removeAndToggle(thisElement, parentTagName, targetToggle, toggleClassName) {
+  AddClass(targetToggle, toggleClassName)
+  var parent = findParent(thisElement, parentTagName)
+  var allChildren = findChildren(parent, targetToggle)
+  for (var i = 0; i < allChildren.length; i++) {
+    allChildren[i].classList.toggle(toggleClassName);
+  }
+}
+
+function findParent(thisElement, parentTagName) {
+  while ((thisElement = thisElement.parentElement) && (thisElement.tagName != parentTagName));
+  //Searching loop only stop while parent is founded
+  return thisElement; //if searching no one will return null
+}
+
+function findChildren(parentEL, sl) {
+  return parentEL.querySelectorAll(sl);
+}
+
+//Add Class to all
+function AddClass(el, className) {
+  var _el = document.querySelectorAll(el);
+  for (var i = 0; i < _el.length; i++) {
+    _el[i].classList.add(className);
+  }
+}
+
+//Remove Class to all
+function RemoveClass(el, className) {
+  var _el = document.querySelectorAll(el);
+  for (var i = 0; i < _el.length; i++) {
+    _el[i].classList.remove(className);
+  }
+}
+
 //--------------- end pure js ----------------------------------------------------------//
-
-
 
 $(document).ready(function() {
 
@@ -204,7 +246,24 @@ $(document).ready(function() {
     $(this).parent().siblings().children().find(".uk-slider").css('min-height', height_Slider);
     $(this).parent().siblings().children().find(".uk-slider").children("li").find(".uk-panel").children("img").height(width_img);
   });
+
+  //.offcanvas
+  $(document).mouseup(function(e) {
+    if ($(".offcanvas").has(e.target).length === 0) {
+      $(".offcanvas").addClass("hidden");
+    }
+  });
+  // $(".offcanvas [style^='color:']").attr('style', 'color:' + $(".offcanvas [style^='color:']").inlineStyle('color') + ' !important;');
+  // $(".editor [style^='color:']").each(function() {
+  //   $(this).attr('style', 'color:' + $(this).inlineStyle('color') + ' !important;');
+  // })
+
 });
+
+//Guide - https://wp-mix.com/jquery-check-inline-css-property/
+jQuery.fn.inlineStyle = function(prop) {
+  return this.prop('style')[jQuery.camelCase(prop)]; // returns property value or empty string
+};
 
 UIkit.on('beforeready.uk.dom', function() {
   var hash = document.location.hash;
