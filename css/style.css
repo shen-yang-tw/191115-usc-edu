@@ -25,7 +25,6 @@ a.color_primary:hover *,
 }
 
 .color_secondary,
-.color_secondary *,
 .hover_color_secondary:focus,
 .hover_color_secondary:hover,
 ul.hover_color_secondary>li>a:focus,
